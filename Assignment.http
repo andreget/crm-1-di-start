@@ -1,0 +1,264 @@
+# Assignment.http
+# Run the requests from top to bottom while you implement the endpoints.
+# The expected status code is written above each request.
+# Reset the data when needed: git checkout customers.json and delete activities.json
+
+@host = http://localhost:5080
+
+# An existing customer used by the read tests (customers 1-5 exist in customers.json)
+@customerId = 2
+
+# Set to the "id" in the response of "Create customer"
+@newCustomerId = 6
+
+# Set to the "id" in the response of "Create activity"
+@activityId = 1
+
+# Set to the "id" in the response of step 1 in the challenge at the bottom
+@tempCustomerId = 7
+
+
+### Part 1: Warm-up
+
+### Get all customers (200)
+GET {{host}}/api/customers
+
+### Get one customer (200)
+GET {{host}}/api/customers/{{customerId}}
+
+### Get a customer that does not exist (404)
+GET {{host}}/api/customers/9999
+
+### Filter by status (200, only customers with status Lead)
+GET {{host}}/api/customers?status=Lead
+
+### Search by text (200, name, email or company contains "berg")
+GET {{host}}/api/customers?search=berg
+
+### Search and filter combined (200)
+GET {{host}}/api/customers?search=berg&status=Lead
+
+### Get valid statuses (200)
+GET {{host}}/api/statuses
+
+### Get valid activity types (200)
+GET {{host}}/api/activity-types
+
+
+### Part 2: Customers (write operations)
+
+### Create customer (201, response contains the new customer including its id)
+POST {{host}}/api/customers
+Content-Type: application/json
+
+{
+  "name": "Lars Aas",
+  "email": "lars@example.no",
+  "phone": "90000000",
+  "company": "Aas Transport",
+  "notes": "Created from the .http file",
+  "status": "Lead"
+}
+
+### Create customer without name (400)
+POST {{host}}/api/customers
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "lars@example.no",
+  "status": "Lead"
+}
+
+### Create customer with invalid email (400)
+POST {{host}}/api/customers
+Content-Type: application/json
+
+{
+  "name": "Lars Aas",
+  "email": "not-an-email",
+  "status": "Lead"
+}
+
+### Create customer with invalid status (400)
+POST {{host}}/api/customers
+Content-Type: application/json
+
+{
+  "name": "Lars Aas",
+  "email": "lars@example.no",
+  "status": "VIP"
+}
+
+### Update customer (200, response contains the updated customer)
+PUT {{host}}/api/customers/{{newCustomerId}}
+Content-Type: application/json
+
+{
+  "name": "Lars Aas",
+  "email": "lars@example.no",
+  "phone": "91111111",
+  "company": "Aas Transport AS",
+  "notes": "Updated from the .http file",
+  "status": "Active"
+}
+
+### Update customer that does not exist (404)
+PUT {{host}}/api/customers/9999
+Content-Type: application/json
+
+{
+  "name": "Nobody",
+  "email": "nobody@example.no",
+  "status": "Lead"
+}
+
+### Update customer with invalid data (400)
+PUT {{host}}/api/customers/{{newCustomerId}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "lars@example.no",
+  "status": "Active"
+}
+
+### Delete customer (204)
+DELETE {{host}}/api/customers/{{newCustomerId}}
+
+### Delete the same customer again (404)
+DELETE {{host}}/api/customers/{{newCustomerId}}
+
+
+### Part 3: Activities for a customer
+
+### Get activities for a customer (200, newest first)
+GET {{host}}/api/customers/{{customerId}}/activities
+
+### Get activities for a customer that does not exist (404)
+GET {{host}}/api/customers/9999/activities
+
+### Create activity (201, response contains the new activity including its id)
+POST {{host}}/api/customers/{{customerId}}/activities
+Content-Type: application/json
+
+{
+  "type": "Meeting",
+  "title": "Quarterly review",
+  "date": "2026-12-01T10:00:00",
+  "notes": "Created from the .http file"
+}
+
+### Create activity without date (201, the current time is used)
+POST {{host}}/api/customers/{{customerId}}/activities
+Content-Type: application/json
+
+{
+  "type": "Call",
+  "title": "Follow-up call"
+}
+
+### Create activity without title (400)
+POST {{host}}/api/customers/{{customerId}}/activities
+Content-Type: application/json
+
+{
+  "type": "Meeting",
+  "title": "",
+  "date": "2026-12-01T10:00:00"
+}
+
+### Create activity with invalid type (400)
+POST {{host}}/api/customers/{{customerId}}/activities
+Content-Type: application/json
+
+{
+  "type": "Lunch",
+  "title": "Team lunch",
+  "date": "2026-12-01T12:00:00"
+}
+
+### Create activity for a customer that does not exist (404)
+POST {{host}}/api/customers/9999/activities
+Content-Type: application/json
+
+{
+  "type": "Task",
+  "title": "Prepare proposal",
+  "date": "2026-12-01T10:00:00"
+}
+
+
+### Part 4: Activities
+
+### Get all activities (200)
+GET {{host}}/api/activities
+
+### Get open activities (200, not done, soonest first)
+GET {{host}}/api/activities?open=true
+
+### Mark activity as done (204)
+PUT {{host}}/api/activities/{{activityId}}/done
+Content-Type: application/json
+
+{
+  "done": true
+}
+
+### Open activities no longer contain the activity (200, check the list)
+GET {{host}}/api/activities?open=true
+
+### Reopen activity (204)
+PUT {{host}}/api/activities/{{activityId}}/done
+Content-Type: application/json
+
+{
+  "done": false
+}
+
+### Mark activity that does not exist as done (404)
+PUT {{host}}/api/activities/9999/done
+Content-Type: application/json
+
+{
+  "done": true
+}
+
+### Delete activity (204)
+DELETE {{host}}/api/activities/{{activityId}}
+
+### Delete the same activity again (404)
+DELETE {{host}}/api/activities/{{activityId}}
+
+
+### Part 5: Challenge
+# 1. Run step 1 and note the id in the response.
+# 2. Set @tempCustomerId at the top of the file to that id.
+# 3. Run steps 2, 3 and 4 in order.
+# Extra: every 400 response should have the same format: { "error": "message" }
+
+### Step 1: Create a customer to delete (201)
+POST {{host}}/api/customers
+Content-Type: application/json
+
+{
+  "name": "Temporary Customer",
+  "email": "temp@example.no",
+  "status": "Lead"
+}
+
+### Step 2: Add an activity to that customer (201)
+POST {{host}}/api/customers/{{tempCustomerId}}/activities
+Content-Type: application/json
+
+{
+  "type": "Task",
+  "title": "This activity must disappear with the customer",
+  "date": "2026-12-01T10:00:00"
+}
+
+### Step 3: Delete the customer (204)
+DELETE {{host}}/api/customers/{{tempCustomerId}}
+
+### Step 4: The activity from step 2 must not be in the list (200)
+GET {{host}}/api/activities

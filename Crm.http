@@ -1,0 +1,12 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@host = http://localhost:5080
+
+### Get all customers
+GET {{host}}/api/customers
+
+### Get one customer
+GET {{host}}/api/customers/2
+
+### Get a customer that does not exist
+GET {{host}}/api/customers/99
