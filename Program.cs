@@ -211,16 +211,22 @@ app.MapPost("/activities/{id:int}/delete", async (int id, HttpRequest request) =
     return Results.Redirect(SafeBack(form["back"].ToString()));
 });
 
+// ---------- API (JSON) ----------
+
 // Reference lists
 app.MapGet("/api/statuses", () => Customer.Statuses);
 
 app.MapGet("/api/activity-types", () => Activity.Types);
 
 // Customers: list with optional search and status filter
-app.MapGet("/api/customers", (string? search, string? status) =>
+// The service is injected by the DI container instead of created with new
+app.MapGet("/api/customers", (string? search, string? status, ICustomerService service) =>
 {
-    return new CustomerService().Search(search, status);
+    return service.Search(search, status);
 });
+
+// Version from the DI video: same injection, but without search and status filter
+//app.MapGet("/api/customers", (ICustomerService service) => service.GetAll());
 
 // Returns one customer, or 404 if the id does not exist
 app.MapGet("/api/customers/{id:int}", (int id) =>

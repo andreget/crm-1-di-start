@@ -15,7 +15,7 @@
 @activityId = 1
 
 # Set to the "id" in the response of step 1 in the challenge at the bottom
-@tempCustomerId = 7
+@tempCustomerId = 6
 
 
 ### Part 1: Warm-up
