@@ -72,23 +72,40 @@ dotnet run
 
 Åpne filen i Visual Studio, start appen, og trykk **Send request** over et kall. Kjør kallene ovenfra og ned. Noen kall bruker variabler øverst i filen (`@newCustomerId`, `@activityId` og `@tempCustomerId`). Sett dem til id-en i svaret fra opprett-kallet før du kjører de neste. Hvis appen kjører på en annen port enn 5080, endrer du `@host`.
 
+### `Assignment.http` og DI
+
+DI endrer hvordan koden er koblet sammen, ikke hva API-et gjør. Alle kallene i `Assignment.http` skal derfor gi de samme statuskodene og svarene etter DI-oppgaven som før.
+
+- Kjør kallene før du begynner, slik at du vet at alt fungerer.
+- Kjør dem på nytt etter hver endring.
+- Hvis et kall som virket, slutter å virke, har du en loggføring til `Log.md`.
+
 ## Prosjektstruktur
 
 ```
-Program.cs          Endepunkter (HTML og API) og hjelpefunksjoner
+Program.cs          Endepunkter, hjelpefunksjoner og registrering av tjenester (DI)
 Models/             Customer og Activity
-Services/           CustomerService og ActivityService (lagrer data i JSON-filer)
+Services/           ICustomerService, CustomerService og ActivityService (lagrer data i JSON-filer)
 Templates/          HTML-maler med {{placeholders}}
 wwwroot/            CSS og JavaScript
 customers.json      Eksempelkunder (appen endrer denne filen)
-Crm.http            Kall fra API-videoen
-Assignment.http     Tester for alle endepunktene
+Crm.http            De tre første kallene fra API-videoen
+Assignment.http     Alle kallene som tester API-et. Skal gi samme svar før og etter DI-oppgaven
+Log.md              Logg og designnotater som du fører underveis (del av leveransen)
 ```
 
 ## Data
 
 - `customers.json` inneholder fem eksempelkunder, og appen skriver til den. Gjenopprett den med `git checkout customers.json`.
 - `activities.json` opprettes første gang du legger til en aktivitet, og følges ikke av Git. Slett filen for å fjerne alle aktiviteter.
+
+## Logg
+
+Repoet inneholder filen `Log.md`. Før logg underveis mens du jobber med
+oppgaven: feil du møter, og korte designnotater om valg du tar. Malene
+ligger i filen. Commit loggen sammen med koden.
+
+Loggen er en del av leveransen, sammen med koden og `Assignment.http`.
 
 ## Feilsøking
 

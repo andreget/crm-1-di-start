@@ -3,7 +3,7 @@ using Crm.Models;
 
 namespace Crm.Services;
 
-public class CustomerService
+public class CustomerService : ICustomerService
 {
     private string path = "customers.json";
 

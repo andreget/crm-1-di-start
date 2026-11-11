@@ -4,6 +4,7 @@ using Crm.Models;
 using Crm.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 var app = builder.Build();
 
 app.UseStaticFiles(); // serves wwwroot (css and js)
@@ -209,8 +210,6 @@ app.MapPost("/activities/{id:int}/delete", async (int id, HttpRequest request) =
     new ActivityService().Delete(id);
     return Results.Redirect(SafeBack(form["back"].ToString()));
 });
-
- // app.MapGet("/api/customers", () => new CustomerService().GetAll());
 
 // Reference lists
 app.MapGet("/api/statuses", () => Customer.Statuses);
