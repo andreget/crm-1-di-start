@@ -120,7 +120,8 @@ Models/             Customer og Activity
 Services/           ICustomerService, CustomerService og ActivityService (lagrer data i JSON-filer)
 Templates/          HTML-maler med {{placeholders}}
 wwwroot/            CSS og JavaScript
-customers.json      Eksempelkunder (appen endrer denne filen)
+customers.json      Eksempelkunder JSON format (appen endrer denne filen)
+customers.xml		Eksempelkunder XML format (appen endrer denne filen)
 Crm.http            De tre første kallene fra API-videoen
 Assignment.http     Alle kallene som tester API-et. Skal gi samme svar før og etter DI-oppgaven
 Log.md              Logg og designnotater som du fører underveis (del av leveransen)
@@ -129,10 +130,11 @@ TestResults.md      Resultatene fra kallene i Assignment.http (del av leveransen
 
 ## Data
 
-- `customers.json` inneholder fem eksempelkunder. Appen skriver til denne filen når du oppretter, endrer eller sletter kunder, så den vises som endret i Git. Slik gjenoppretter du eksempeldataene:
+- `customers.json` og `customers.xml` inneholder fem eksempelkunder. Appen skriver til disse filene når du oppretter, endrer eller sletter kunder, så de vises som endret i Git. Slik gjenoppretter du eksempeldataene:
 
 ```
 git checkout customers.json
+git checkout customers.xml
 ```
 
 - `activities.json` opprettes første gang du legger til en aktivitet. Den følges ikke av Git. Slett filen for å fjerne alle aktiviteter.
@@ -144,7 +146,7 @@ Nullstill dataene før du kjører hele `Assignment.http` på nytt. Standardverdi
 Repoet inneholder to filer som du fyller ut underveis. Begge er en del av leveransen, sammen med koden og `Assignment.http`.
 
 - **`Log.md`:** før logg mens du jobber med oppgaven: feil du møter, og korte designnotater om valg du tar. Malene ligger i filen. Commit loggen sammen med koden.
-- **`TestResults.md`:** før inn statuskoden du faktisk får for hvert kall i `Assignment.http`. For noen kall står det også hva du skal sjekke i svaret.
+- **`TestResults.md`:** før inn statuskodene du faktisk får for hvert kall i `Assignment.http`. For noen kall står det også hva du skal sjekke i svaret.
 
 ## Feilsøking
 

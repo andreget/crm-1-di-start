@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<Customer>
+		<Id>1</Id>
+		<Name>Ingrid Haugen</Name>
+		<Email>ingrid@nordlys.no</Email>
+		<Phone>91234567</Phone>
+		<Company>Nordlys AS</Company>
+		<Notes>Signed the annual agreement in January.</Notes>
+		<Status>Active</Status>
+		<Created>2026-01-12T09:30:00</Created>
+	</Customer>
+	<Customer>
+		<Id>2</Id>
+		<Name>Marius Berg</Name>
+		<Email>marius@fjordtech.no</Email>
+		<Phone>92345678</Phone>
+		<Company>FjordTech</Company>
+		<Notes>Asked for a demo. Follow up next week.</Notes>
+		<Status>Lead</Status>
+		<Created>2026-02-03T14:15:00</Created>
+	</Customer>
+	<Customer>
+		<Id>3</Id>
+		<Name>Sofie Lund</Name>
+		<Email>sofie@bergbygg.no</Email>
+		<Phone>93456789</Phone>
+		<Company>Berg Bygg</Company>
+		<Notes />
+		<Status>Active</Status>
+		<Created>2026-03-18T11:00:00</Created>
+	</Customer>
+	<Customer>
+		<Id>4</Id>
+		<Name>Tarjei Moen</Name>
+		<Email>tarjei@havnetorget.no</Email>
+		<Phone>94567890</Phone>
+		<Company>Havnetorget</Company>
+		<Notes>Cancelled the subscription.</Notes>
+		<Status>Inactive</Status>
+		<Created>2025-11-27T16:45:00</Created>
+	</Customer>
+	<Customer>
+		<Id>5</Id>
+		<Name>Camilla Dahl</Name>
+		<Email>camilla@solbakken.no</Email>
+		<Phone>95678901</Phone>
+		<Company>Solbakken Regnskap</Company>
+		<Notes>Met at a conference.</Notes>
+		<Status>Lead</Status>
+		<Created>2026-04-09T08:20:00</Created>
+	</Customer>
+</ArrayOfCustomer>

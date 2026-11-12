@@ -3,21 +3,19 @@
 Før logg underveis mens du jobber, ikke etterpå. Skriv kort, i stikkord er helt greit.
 Commit loggen sammen med koden, slik at det synes når den er skrevet.
 
-- Minst tre loggføringer i denne oppgaven, der minst én er en feil du faktisk løste
-  og minst én er et designnotat.
+- Minst tre loggføringer i denne oppgaven, der minst én er en feil du faktisk løste.
+- Beskriv feilsøkingen slik: Trodde / Prøvde / Oppdaget / Lærte. Hold hver føring til 5–8 linjer.
 - Feil hypoteser er ikke noe problem. Det er tankegangen som teller.
 - Du kan også skrive korte designnotater: hva du valgte og hvorfor.
 
 ---
 
-### [dato] Kort tittel
+### [dato] Kort tittel (hva gikk galt?)
 
-**Hva prøvde jeg?**
-**Hva forventet jeg?**
-**Hva skjedde?**
-**Hva trodde jeg var årsaken?**
-**Hva var faktisk årsaken, og hvordan fant jeg den?**
-**Hva tar jeg med meg?**
+**Trodde:** Hva forventet jeg skulle skje, og hva trodde jeg var årsaken da det ikke skjedde?
+**Prøvde:** Hva gjorde jeg for å undersøke eller rette feilen?
+**Oppdaget:** Hva var den faktiske årsaken?
+**Lærte:** Hva tar jeg med meg videre?
 
 ### [dato] Designnotat: kort tittel
 
