@@ -1,17 +1,33 @@
-﻿# Crm: løsning for API-oppgavene
+﻿# Crm
 
-Dette er løsningsforslaget til API-oppgavene i modul 1. Det bygger på startpunktet `crm-1-api-start`, og har alle endepunktene implementert. Neste trinn i modulen er dependency injection.
+En liten webapp for kundebehandling (CRM). Dette er startpunktet for DI-oppgaven (1C) i Delmodul 1. Repoet inneholder hele API-et fra API-oppgaven, og du skal nå endre hvordan koden er koblet sammen, uten å endre hva API-et gjør.
 
 ## Hva den gjør
 
-- **Kunder:** liste med søk og statusfilter, detaljside, opprett, endre og slett (HTML-sidene).
-- **Aktiviteter:** møter, samtaler, e-poster og oppgaver per kunde, med oversikt over åpne aktiviteter (HTML-sidene).
+- **Kunder:** liste med søk og statusfilter, detaljside, opprett, endre og slett.
+- **Aktiviteter:** registrer møter, samtaler, e-poster og oppgaver for en kunde, merk dem som ferdige, og se alle åpne aktiviteter i én oversikt. Forfalte aktiviteter er markert.
 - **API (JSON):** alle endepunktene under `/api`, som beskrevet under.
+- **Dependency injection (DI):** `ICustomerService` er registrert, og ett endepunkt bruker den. Resten gjør du i oppgaven.
 
 ## Krav
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - Visual Studio (en nyere versjon, som støtter `.http`-filer), eller en annen editor sammen med kommandolinjeverktøyet `dotnet`
+
+Sjekk at installasjonen fungerer:
+
+```
+dotnet --version
+```
+
+## Lag din egen kopi
+
+1. Klikk **Use this template** øverst på denne siden, og deretter **Create a new repository**.
+2. Klone det nye repoet ditt:
+
+```
+git clone <url-to-your-repository>
+```
 
 ## Kjør appen
 
@@ -24,9 +40,13 @@ dotnet restore
 dotnet run
 ```
 
-> **Start alltid appen fra prosjektmappen.** Maler og datafiler leses med relative stier.
+Åpne deretter <http://localhost:5080>.
+
+> **Start alltid appen fra prosjektmappen.** Maler og datafiler leses med relative stier, så sidene feiler hvis appen startes fra en annen mappe.
 
 ## API-et
+
+Endepunktene under `/api` returnerer data som JSON, ikke HTML.
 
 ### Kunder
 
@@ -65,20 +85,32 @@ dotnet run
 - **Sortering:** `GET /api/customers` sorterer på navn.
 - **JSON-navn:** Egenskapene i JSON starter med liten bokstav (`name`, `email`).
 
-## Test med `.http`-filer
+### Test med `.http`-filer
 
 - `Crm.http` inneholder de tre første kallene fra API-videoen.
 - `Assignment.http` inneholder alle kallene som tester løsningen, med forventet statuskode i kommentaren over hvert kall.
 
 Åpne filen i Visual Studio, start appen, og trykk **Send request** over et kall. Kjør kallene ovenfra og ned. Noen kall bruker variabler øverst i filen (`@newCustomerId`, `@activityId` og `@tempCustomerId`). Sett dem til id-en i svaret fra opprett-kallet før du kjører de neste. Hvis appen kjører på en annen port enn 5080, endrer du `@host`.
 
-### `Assignment.http` og DI
+#### `Assignment.http` og DI
 
 DI endrer hvordan koden er koblet sammen, ikke hva API-et gjør. Alle kallene i `Assignment.http` skal derfor gi de samme statuskodene og svarene etter DI-oppgaven som før.
 
 - Kjør kallene før du begynner, slik at du vet at alt fungerer.
 - Kjør dem på nytt etter hver endring.
 - Hvis et kall som virket, slutter å virke, har du en loggføring til `Log.md`.
+
+## DI i dette repoet
+
+Dette er allerede gjort, og er det samme som DI-videoen viser:
+
+- `Services/ICustomerService.cs` er et interface med metodene i `CustomerService`.
+- `Program.cs` registrerer tjenesten: `builder.Services.AddScoped<ICustomerService, CustomerService>();`
+- `GET /api/customers` får `ICustomerService` som parameter, i stedet for å lage tjenesten med `new`.
+
+Alle de andre endepunktene lager fortsatt tjenesten selv med `new CustomerService()`. Det er utgangspunktet for oppgaven.
+
+Under `GET /api/customers` i `Program.cs` står varianten fra videoen som en kommentar. Den bruker `GetAll` og har ikke søk og statusfilter.
 
 ## Prosjektstruktur
 
@@ -92,27 +124,36 @@ customers.json      Eksempelkunder (appen endrer denne filen)
 Crm.http            De tre første kallene fra API-videoen
 Assignment.http     Alle kallene som tester API-et. Skal gi samme svar før og etter DI-oppgaven
 Log.md              Logg og designnotater som du fører underveis (del av leveransen)
+TestResults.md      Resultatene fra kallene i Assignment.http (del av leveransen)
 ```
 
 ## Data
 
-- `customers.json` inneholder fem eksempelkunder, og appen skriver til den. Gjenopprett den med `git checkout customers.json`.
-- `activities.json` opprettes første gang du legger til en aktivitet, og følges ikke av Git. Slett filen for å fjerne alle aktiviteter.
+- `customers.json` inneholder fem eksempelkunder. Appen skriver til denne filen når du oppretter, endrer eller sletter kunder, så den vises som endret i Git. Slik gjenoppretter du eksempeldataene:
 
-## Logg
+```
+git checkout customers.json
+```
 
-Repoet inneholder filen `Log.md`. Før logg underveis mens du jobber med
-oppgaven: feil du møter, og korte designnotater om valg du tar. Malene
-ligger i filen. Commit loggen sammen med koden.
+- `activities.json` opprettes første gang du legger til en aktivitet. Den følges ikke av Git. Slett filen for å fjerne alle aktiviteter.
 
-Loggen er en del av leveransen, sammen med koden og `Assignment.http`.
+Nullstill dataene før du kjører hele `Assignment.http` på nytt. Standardverdiene for variablene øverst i filen stemmer bare med ferske data.
+
+## Logg og testresultater
+
+Repoet inneholder to filer som du fyller ut underveis. Begge er en del av leveransen, sammen med koden og `Assignment.http`.
+
+- **`Log.md`:** før logg mens du jobber med oppgaven: feil du møter, og korte designnotater om valg du tar. Malene ligger i filen. Commit loggen sammen med koden.
+- **`TestResults.md`:** før inn statuskoden du faktisk får for hvert kall i `Assignment.http`. For noen kall står det også hva du skal sjekke i svaret.
 
 ## Feilsøking
 
 | Problem | Hva du bør sjekke |
 |---|---|
-| Feilen `NETSDK1004` (assets file not found) | Kjør `dotnet restore` i mappen med `Crm.csproj`. |
-| 404 på et endepunkt som skal finnes | Appen kjører med gammel kode. Stopp den og start på nytt. |
-| Feil eller blank side rett etter oppstart | Appen er startet fra feil mappe. |
+| Feilen `NETSDK1004` (assets file not found) | Kjør `dotnet restore` i mappen med `Crm.csproj`, og bygg på nytt. |
+| Feil eller blank side rett etter oppstart | Appen er startet fra feil mappe. Start den fra mappen med `Crm.csproj`. |
 | Port 5080 er opptatt | Endre `applicationUrl` i `Properties/launchSettings.json`, og `@host` i `.http`-filene. |
-| `Send request` vises ikke over kallene | Filen må ha endelsen `.http`, og Visual Studio må være en nyere versjon. |
+| `Send request` vises ikke over kallene i `.http`-filene | Filen må ha endelsen `.http`, og Visual Studio må være en nyere versjon. |
+| Dataene ser rare ut etter eksperimentering | Gjenopprett `customers.json` og slett `activities.json`. |
+| Appen feiler etter at du har lagt til en tjeneste som parameter i et endepunkt | Tjenesten er ikke registrert med `builder.Services` i `Program.cs`, eller parameteren har feil type. |
+| Et kall i `Assignment.http` gir 404 for en id som skulle finnes | Variablene øverst i filen peker på feil id. Sett dem til id-en i svaret fra opprett-kallet. |
