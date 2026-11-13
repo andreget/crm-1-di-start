@@ -31,7 +31,7 @@ git clone <url-to-your-repository>
 
 ## Kjør appen
 
-**Visual Studio:** åpne `Crm.sln` (eller `Crm.csproj`) og trykk `F5`. Nettleseren åpner <http://localhost:5080>.
+**Visual Studio:** åpne `Crm.slnx` (eller `Crm.csproj`) og trykk `F5`. Nettleseren åpner <http://localhost:5080>.
 
 **Kommandolinjen:** i mappen som inneholder `Crm.csproj`:
 
